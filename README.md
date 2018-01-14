@@ -14,7 +14,17 @@ This is a simple plasma applet for KDE Plasma 5 to control systemd services. It 
 4. make
 5. make install
 
-For Arch Linux there is a package availabe via AUR: https://aur.archlinux.org/packages/plasma5-applets-systemd/
+For Arch Linux there is a package available via AUR: https://aur.archlinux.org/packages/plasma5-applets-systemd/
+
+### Dependencies (Debian)
+
+* cmake
+* linux-libc-dev
+* build-essential
+* extra-cmake-modules
+* libkf5config-dev
+* qt5-default
+* qtdeclarative5-dev
 
 ### Prerequisite
 
