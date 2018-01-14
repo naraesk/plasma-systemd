@@ -56,6 +56,7 @@ Item {
     }
 
     ScrollView {
+        height: view.contentHeight
         ListView {
             id:view
             width: parent.width
