@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2017 by David Baum <david.baum@naraesk.eu>
  *
- * This file is part of plasma-yamaha.
+ * This file is part of plasma-systemd.
  *
  * plasma-systemd is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with plasma-codeship.  If not, see <http://www.gnu.org/licenses/>.
+ * along with plasma-systemd.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 import QtQuick 2.5
@@ -26,6 +26,8 @@ import Process 1.0
 
 Item {
     id: root
+    Layout.maximumHeight: view.contentHeight
+    Layout.minimumHeight: view.contentHeight
 
     Component.onCompleted: {
         loadServices()
@@ -53,52 +55,45 @@ Item {
         id: serviceModel
     }
 
-    RowLayout {
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-        ScrollView {
-            Layout.fillWidth: true
+    ScrollView {
+        ListView {
+            id:view
+            width: parent.width
+            model: serviceModel
+            spacing: 7
             Layout.fillHeight: true
-
-            ListView {
-                width: parent.width
-                model: serviceModel
-                spacing: 7
-
                 delegate: RowLayout {
-                    width: parent.width
+                width: parent.width
+                function update() {
+                    statusSwitch.checked = process.isActive(model.service)
+                }
 
-                    function update() {
-                        statusSwitch.checked = process.isActive(model.service)
+                Timer {
+                    interval: 1000
+                    repeat: true
+                    triggeredOnStart: true
+                    running: true
+                    onTriggered: {
+                        update()
                     }
+                }
 
-                    Timer {
-                        interval: 1000
-                        repeat: true
-                        triggeredOnStart: true
-                        running: true
-                        onTriggered: {
-                            update()
+                Switch {
+                    id: statusSwitch
+                    Layout.leftMargin: 10
+                    onClicked: {
+                        if (checked) {
+                            process.start2('sudo', [ '/bin/systemctl', 'start', model.service ]);
+                        } else {
+                            process.start2('sudo', [ '/bin/systemctl', 'stop', model.service ]);
                         }
                     }
+                }
 
-                    Switch {
-                        id: statusSwitch
-                        Layout.leftMargin: 10
-                        onClicked: {
-                            if (checked) {
-                                process.start2('sudo', [ '/bin/systemctl', 'start', model.service ]);
-                            } else {
-                                process.start2('sudo', [ '/bin/systemctl', 'stop', model.service ]);
-                            }
-                        }
-                    }
-
-                    Label {
-                        id: serviceName
-                        text: model.service
-                        Layout.fillWidth: true
-                    }
+                Label {
+                    id: serviceName
+                    text: model.service
+                    Layout.fillWidth: true
                 }
             }
         }
