@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2017 by David Baum <david.baum@naraesk.eu>
  *
- * This file is part of plasma-yamaha.
+ * This file is part of plasma-systemd.
  *
  * plasma-systemd is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with plasma-codeship.  If not, see <http://www.gnu.org/licenses/>.
+ * along with plasma-systemd.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 import QtQuick 2.5
@@ -37,6 +37,18 @@ Item {
         }
    }
 
+    function up(index, name) {
+        serviceModel.move(index, index-1,1)
+        var object = cfg_services.splice(index,1)
+        cfg_services.splice(index-1, 0, object )
+    }
+
+    function down(index, name) {
+        serviceModel.move(index, index+1,1)
+        var object = cfg_services.splice(index,1)
+        cfg_services.splice(index+1, 0, object)
+    }
+
     function addService(object) {
         serviceModel.append( object )
         cfg_services.push( JSON.stringify(object) )
@@ -52,10 +64,8 @@ Item {
     ColumnLayout {
         anchors.fill: parent
         Layout.fillWidth: true
-        GridLayout {
+        RowLayout {
             id: layout
-            columns: 3
-            rows: 3
             Layout.fillWidth: true
             width: parent.width
 
@@ -80,42 +90,41 @@ Item {
             }
        }
 
-        ColumnLayout {
-            width: parent.width
-            height: parent.height
+       ListModel {
+            id: serviceModel
+        }
 
-            ListModel {
-                id: serviceModel
-            }
+        ScrollView {
+            Layout.fillHeight: true
+            Layout.fillWidth: true
 
-            RowLayout {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+            ListView {
+                width: parent.width
+                model: serviceModel
 
-                ScrollView {
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
+                delegate: RowLayout {
 
-                    frameVisible: true
+                    Label {
+                        Layout.fillWidth: true
+                        text: model.service
+                    }
 
-                    ListView {
-                        width: parent.width
-                        model: serviceModel
+                    Button {
+                        id: removeServiceButton
+                        iconName: "list-remove"
+                        onClicked: removeService(model.index)
+                    }
 
-                        delegate: RowLayout {
-                            width: parent.width
+                    Button {
+                        id: moveup
+                        iconName: "pan-up-symbolic"
+                        onClicked: up(model.index)
+                    }
 
-                            Label {
-                                Layout.fillWidth: true
-                                text: model.service
-                            }
-
-                            Button {
-                                id: removeServiceButton
-                                iconName: "list-remove"
-                                onClicked: removeService(model.index)
-                            }
-                        }
+                    Button {
+                        id: movedown
+                        iconName: "pan-down-symbolic"
+                        onClicked: down(model.index)
                     }
                 }
             }
