@@ -30,7 +30,6 @@ bool Process::isActive(const QString &name) {
     QStringList arguments;
     arguments << "systemctl" << "is-active" << name;
     start("sudo", arguments);
-    waitForStarted();
     waitForFinished();
     if(readAll() == "active\n") {
         return true;
@@ -38,7 +37,6 @@ bool Process::isActive(const QString &name) {
         return false;
     }
 }
-
 
 void Process::start2(const QString &program, const QVariantList &arguments) {
         QStringList args;
@@ -50,5 +48,4 @@ void Process::start2(const QString &program, const QVariantList &arguments) {
         }
 
         start(program, args);
-        waitForStarted();
-        waitForFinished();}
+}
