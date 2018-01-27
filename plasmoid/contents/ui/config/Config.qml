@@ -117,13 +117,13 @@ Item {
 
                     Button {
                         id: moveup
-                        iconName: "pan-up-symbolic"
+                        iconName: "arrow-up"
                         onClicked: up(model.index)
                     }
 
                     Button {
                         id: movedown
-                        iconName: "pan-down-symbolic"
+                        iconName: "arrow-down"
                         onClicked: down(model.index)
                     }
                 }
