@@ -10,7 +10,7 @@ This is a simple plasma applet for KDE Plasma 5 to control systemd services. It 
 ### Installation
 1. mkdir biuld
 2. cd build
-3. cmake -DCMAKE_INSTALL_PREFIX=`kf5-config --prefix` -DCMAKE_BUILD_TYPE=Release -DLIB_INSTALL_DIR=lib -DKDE_INSTALL_USE_QT_SYS_PATHS=ON ../
+3. cmake -DCMAKE_INSTALL_PREFIX=`kf5-config --prefix` -DCMAKE_BUILD_TYPE=Release -DKDE_INSTALL_LIBDIR=lib -DKDE_INSTALL_USE_QT_SYS_PATHS=ON ../
 4. make
 5. make install
 
@@ -23,6 +23,7 @@ For Arch Linux there is a package available via AUR: https://aur.archlinux.org/p
 * build-essential
 * extra-cmake-modules
 * libkf5config-dev
+* libkf5plasma-dev
 * qt5-default
 * qtdeclarative5-dev
 
