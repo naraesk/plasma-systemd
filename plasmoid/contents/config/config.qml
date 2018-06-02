@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 by David Baum <david.baum@naraesk.eu>
+ * Copyright (C) 2018 by David Baum <david.baum@naraesk.eu>
  *
  * This file is part of plasma-yamaha.
  *
@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with plasma-codeship.  If not, see <http://www.gnu.org/licenses/>.
+ * along with plasma-systemd.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 import QtQuick 2.2

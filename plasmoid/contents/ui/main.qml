@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 by David Baum <david.baum@naraesk.eu>
+ * Copyright (C) 2018 by David Baum <david.baum@naraesk.eu>
  *
  * This file is part of plasma-systemd.
  *
@@ -19,9 +19,9 @@
 
 import QtQuick 2.5
 import QtQuick.Layouts 1.3
-import QtQuick.Controls 1.4
-import QtQuick.Dialogs 1.2
-import QtQuick.Controls.Styles 1.2
+import QtQuick.Controls 1.3
+import QtQuick.Dialogs 1.3
+import QtQuick.Controls.Styles 1.3
 import Process 1.0
 
 Item {
@@ -84,9 +84,17 @@ Item {
                     Layout.leftMargin: 10
                     onClicked: {
                         if (checked) {
-                            process.start2('sudo', [ '/bin/systemctl', 'start', model.service ]);
+                            if(model.userinit) {
+                                process.start2('sudo', [ '/bin/systemctl', '--user', 'start', model.service]);
+                            } else {
+                                process.start2('sudo', [ '/bin/systemctl', 'start', model.service]);
+                            }
                         } else {
-                            process.start2('sudo', [ '/bin/systemctl', 'stop', model.service ]);
+                            if(model.userinit) {
+                                process.start2('sudo', [ '/bin/systemctl', '--user', 'stop', model.service]);
+                            } else {
+                                process.start2('sudo', [ '/bin/systemctl', 'stop', model.service]);
+                            }
                         }
                     }
                 }

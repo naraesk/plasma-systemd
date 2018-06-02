@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 by David Baum <david.baum@naraesk.eu>
+ * Copyright (C) 2018 by David Baum <david.baum@naraesk.eu>
  *
  * This file is part of plasma-systemd.
  *
@@ -19,15 +19,13 @@
 
 import QtQuick 2.5
 import QtQuick.Controls 1.3
-import QtQuick.Layouts 1.1
-import QtQuick.Dialogs 1.2
+import QtQuick.Layouts 1.3
+import QtQuick.Dialogs 1.3
 
 Item {
     property var cfg_services: []
 
     id: root
-    width: parent.width
-    height: parent.height
 
     Component.onCompleted: {
         var list = plasmoid.configuration.services
@@ -35,7 +33,7 @@ Item {
         for(var i in list) {
             addService( JSON.parse(list[i]) )
         }
-   }
+    }
 
     function up(index, name) {
         serviceModel.move(index, index-1,1)
@@ -60,14 +58,15 @@ Item {
             cfg_services.splice(index,1)
         }
     }
-
     ColumnLayout {
         anchors.fill: parent
         Layout.fillWidth: true
-        RowLayout {
-            id: layout
+        Layout.fillHeight: true
+
+        GridLayout {
             Layout.fillWidth: true
-            width: parent.width
+            columns: 2
+            id: layout
 
             Label {
                 text: i18n('Service name')
@@ -77,54 +76,97 @@ Item {
             TextField {
                 id: name
                 Layout.fillWidth: true
-                placeholderText: "service name"
+                placeholderText: "Service name"
+            }
+
+            Label {
+                text: i18n('User unit')
+                Layout.alignment: Qt.AlignRight
+            }
+
+            CheckBox {
+                id: userunit
             }
 
             Button {
                 iconName: "list-add"
+                text: i18n('Add service')
+                Layout.columnSpan: 2
+                Layout.alignment: Qt.AlignRight
                 onClicked: {
-                    var object = ({'service': name.text})
+                    var object = ({'userunit': userunit.checked, 'service': name.text})
                     addService(object)
                     name.text = ""
+                    userunit.checked = false
                 }
             }
-       }
+        }
 
-       ListModel {
+        ListModel {
             id: serviceModel
         }
 
-        ScrollView {
-            Layout.fillHeight: true
+        TableView {
+            model: serviceModel
+            id: view
             Layout.fillWidth: true
+            Layout.fillHeight: true
+            sortIndicatorVisible: false
 
-            ListView {
-                width: parent.width
-                model: serviceModel
-
-                delegate: RowLayout {
-
-                    Label {
-                        Layout.fillWidth: true
-                        text: model.service
+            TableViewColumn {
+                role: "service"
+                title: i18n("Service name")
+                width: parent.width * 0.8
+                horizontalAlignment: Text.AlignHCenter
+                delegate: Component {
+                    id: nameDelegate
+                    Text {
+                        text: styleData.value
+                        color: styleData.textColor
                     }
+                }
+            }
 
-                    Button {
-                        id: removeServiceButton
-                        iconName: "list-remove"
-                        onClicked: removeService(model.index)
+            TableViewColumn {
+                role: "userunit"
+                title: i18n("User unit")
+                width: parent.width * 0.08
+                horizontalAlignment: Text.AlignHCenter
+                delegate: Component {
+                    id: unitDelegate
+                    CheckBox {
+                        checked: styleData.value
+                        enabled: false
                     }
+                }
+            }
 
-                    Button {
-                        id: moveup
-                        iconName: "arrow-up"
-                        onClicked: up(model.index)
-                    }
+            TableViewColumn {
+                role: "actions"
+                title: i18n("Actions")
+                width: parent.width * 0.1
+                horizontalAlignment: Text.AlignHCenter
+                delegate: Component {
+                    id: actionDelegate
+                    Row {
+                        id: row
+                        Button {
+                            iconName: "list-remove"
+                            onClicked: removeService(model.index)
+                            height: 20
+                        }
 
-                    Button {
-                        id: movedown
-                        iconName: "arrow-down"
-                        onClicked: down(model.index)
+                        Button {
+                            iconName: "arrow-up"
+                            onClicked: up(model.index)
+                            height: 20
+                        }
+
+                        Button {
+                            iconName: "arrow-down"
+                            onClicked: down(model.index)
+                            height: 20
+                        }
                     }
                 }
             }

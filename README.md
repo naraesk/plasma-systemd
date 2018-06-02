@@ -6,11 +6,12 @@ This is a simple plasma applet for KDE Plasma 5 to control systemd services. It 
 * start service (`sudo systemctl start SERVICE`)
 * stop service (`sudo systemctl stop SERVICE`)
 * updates automatically if status changed externally
+* system units and user units (--user)
 
 ### Installation
 1. mkdir biuld
 2. cd build
-3. cmake -DCMAKE_INSTALL_PREFIX=`kf5-config --prefix` -DCMAKE_BUILD_TYPE=Release -DLIB_INSTALL_DIR=lib -DKDE_INSTALL_USE_QT_SYS_PATHS=ON ../
+3. cmake -DCMAKE_INSTALL_PREFIX=\`kf5-config --prefix\` -DCMAKE_BUILD_TYPE=Release -DLIB_INSTALL_DIR=lib -DKDE_INSTALL_USE_QT_SYS_PATHS=ON ../
 4. make
 5. make install
 
