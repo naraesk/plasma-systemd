@@ -24,6 +24,7 @@ For Arch Linux there is a package available via AUR: https://aur.archlinux.org/p
 * build-essential
 * extra-cmake-modules
 * libkf5config-dev
+* libkf5plasma-dev
 * qt5-default
 * qtdeclarative5-dev
 
