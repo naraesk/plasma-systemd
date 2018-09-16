@@ -9,11 +9,9 @@ This is a simple plasma applet for KDE Plasma 5 to control systemd services. It 
 * system units and user units (--user)
 
 ### Prerequisite
-
 To work properly, you must be able to run `sudo systemctl` without password. Usually you can achieve this be editing `/etc/sudoers` with visudo.
 
 ### Installation
-
 1. mkdir biuld
 2. cd build
 3. cmake -DCMAKE_INSTALL_PREFIX=\`qtpaths --install-prefix\` -DCMAKE_BUILD_TYPE=Release -DLIB_INSTALL_DIR=lib -DKDE_INSTALL_USE_QT_SYS_PATHS=ON ../
