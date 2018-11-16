@@ -66,7 +66,7 @@ Item {
                 delegate: RowLayout {
                 width: parent.width
                 function update() {
-                    statusSwitch.checked = process.isActive(model.service)
+                    statusSwitch.checked = process.isActive(model.service, model.userunit)
                 }
 
                 Timer {
@@ -84,14 +84,14 @@ Item {
                     Layout.leftMargin: 10
                     onClicked: {
                         if (checked) {
-                            if(model.userinit) {
-                                process.start2('sudo', [ '/bin/systemctl', '--user', 'start', model.service]);
+                            if(model.userunit) {
+                                process.start2('/bin/systemctl', ['--user', 'start', model.service]);
                             } else {
                                 process.start2('sudo', [ '/bin/systemctl', 'start', model.service]);
                             }
                         } else {
-                            if(model.userinit) {
-                                process.start2('sudo', [ '/bin/systemctl', '--user', 'stop', model.service]);
+                            if(model.userunit) {
+                                process.start2('/bin/systemctl', ['--user', 'stop', model.service]);
                             } else {
                                 process.start2('sudo', [ '/bin/systemctl', 'stop', model.service]);
                             }

@@ -26,10 +26,18 @@ Process::Process(QObject *parent) : QProcess(parent) {
 Process::~Process() {
 }
 
-bool Process::isActive(const QString &name) {
+bool Process::isActive(const QString &name, bool userunit) {
     QStringList arguments;
-    arguments << "systemctl" << "is-active" << name;
-    start("sudo", arguments);
+    QString program;
+    if(!userunit) {
+        program = "sudo";
+        arguments << "/bin/systemctl";
+    } else {
+        program = "/bin/systemctl";
+        arguments << "--user";
+    }
+    arguments << "is-active" << name;
+    start(program, arguments);
     waitForFinished();
     if(readAll() == "active\n") {
         return true;
