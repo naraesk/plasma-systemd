@@ -31,3 +31,12 @@ For Arch Linux there is a package available via AUR: https://aur.archlinux.org/p
 * libkf5plasma-dev
 * qt5-default
 * qtdeclarative5-dev
+
+### Dependencies (openSUSE)
+
+* cmake
+* extra-cmake-modules
+* linux-glibc-devel
+* libqt5-qtbase-devel
+
+
